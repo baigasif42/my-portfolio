@@ -1,0 +1,33 @@
+# This is your first GitHub Actions workflow!
+# It will automatically deploy your portfolio website to GitHub Pages
+
+name: Deploy Portfolio to GitHub Pages
+
+# When should this workflow run?
+on:
+  push:
+    branches: [ main ]  # Run when code is pushed to main branch
+  pull_request:
+    branches: [ main ]  # Also run on pull requests to main
+
+# Define the jobs (tasks) this workflow will perform
+jobs:
+  # Job 1: Build and Deploy
+  deploy:
+    # What operating system should this run on?
+    runs-on: ubuntu-latest
+    
+    # What steps should this job perform?
+    steps:
+      # Step 1: Get the code from your repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      # Step 2: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        # Only deploy on pushes to main (not on pull requests)
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # Deploy everything in the root directory
